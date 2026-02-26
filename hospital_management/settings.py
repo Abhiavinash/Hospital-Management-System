@@ -42,8 +42,6 @@ INSTALLED_APPS = [
 
     # Third-party apps
     'rest_framework',
-    'crispy_forms',
-    'crispy_bootstrap5',
 
     # Local apps
     'core',
@@ -118,8 +116,9 @@ LOGIN_REDIRECT_URL = '/dashboard/'
 LOGOUT_REDIRECT_URL = '/login/'
 LOGIN_URL = '/login/'
 
-CRISPY_ALLOWED_TEMPLATE_PACKS = "bootstrap5"
-CRISPY_TEMPLATE_PACK = "bootstrap5"
+# Crispy Forms - disabled for Render deployment
+# CRISPY_ALLOWED_TEMPLATE_PACKS = "bootstrap5"
+# CRISPY_TEMPLATE_PACK = "bootstrap5"
 
 
 # Internationalization
