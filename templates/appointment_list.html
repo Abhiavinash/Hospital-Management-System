@@ -1,0 +1,155 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Appointments - UNI Hospital{% endblock %}
+
+{% block content %}
+<div class="header">
+    <div class="d-flex justify-content-between align-items-center">
+        <div>
+            <h1 class="h3 mb-0 fade-in">Appointments</h1>
+            <p class="text-muted mb-0 fade-in delay-1">Manage all appointments</p>
+        </div>
+        <div class="d-flex gap-2 fade-in delay-2">
+            <a href="{% url 'core:appointment-create' %}" class="btn btn-primary">
+                <i class="bi bi-plus-circle me-2"></i>New Appointment
+            </a>
+        </div>
+    </div>
+</div>
+
+<!-- Filters -->
+<div class="row g-3 mb-4">
+    <div class="col-md-3">
+        <div class="card stat-card">
+            <div class="card-body text-center">
+                <h3 class="mb-0 counter" data-target="{{ appointments.count }}">0</h3>
+                <p class="text-muted mb-0">Total Appointments</p>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="card stat-card">
+            <div class="card-body text-center">
+                <h3 class="mb-0 counter text-success" data-target="{{ appointments.filter.status|default:'0'|length }}">0</h3>
+                <p class="text-muted mb-0">Completed</p>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="card stat-card">
+            <div class="card-body text-center">
+                <h3 class="mb-0 counter text-primary" data-target="0">0</h3>
+                <p class="text-muted mb-0">Scheduled</p>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="card stat-card">
+            <div class="card-body text-center">
+                <h3 class="mb-0 counter text-danger" data-target="0">0</h3>
+                <p class="text-muted mb-0">Cancelled</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="card">
+    <div class="card-header d-flex justify-content-between align-items-center">
+        <h5 class="mb-0"><i class="bi bi-calendar-check me-2 text-primary"></i>All Appointments</h5>
+        <div class="d-flex gap-2">
+            <select class="form-select" style="width: 150px;">
+                <option value="">All Status</option>
+                <option value="scheduled">Scheduled</option>
+                <option value="completed">Completed</option>
+                <option value="cancelled">Cancelled</option>
+            </select>
+            <div class="input-group" style="width: 200px;">
+                <input type="text" class="form-control" placeholder="Search...">
+                <button class="btn btn-outline-secondary"><i class="bi bi-search"></i></button>
+            </div>
+        </div>
+    </div>
+    <div class="card-body p-0">
+        <div class="table-responsive">
+            <table class="table table-hover mb-0">
+                <thead>
+                    <tr>
+                        <th>Patient</th>
+                        <th>Doctor</th>
+                        <th>Date & Time</th>
+                        <th>Reason</th>
+                        <th>Status</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for appointment in appointments %}
+                    <tr>
+                        <td>
+                            <div class="d-flex align-items-center">
+                                <div class="avatar-sm me-2 bg-primary-subtle rounded-circle">
+                                    <i class="bi bi-person text-primary"></i>
+                                </div>
+                                <div>
+                                    <div class="fw-semibold">{{ appointment.patient.user.first_name }} {{ appointment.patient.user.last_name }}</div>
+                                    <small class="text-muted">{{ appointment.patient.patient_id }}</small>
+                                </div>
+                            </div>
+                        </td>
+                        <td>
+                            <div class="d-flex align-items-center">
+                                <div class="avatar-sm me-2 bg-success-subtle rounded-circle">
+                                    <i class="bi bi-person-heart text-success"></i>
+                                </div>
+                                <div>
+                                    <div class="fw-semibold">Dr. {{ appointment.doctor.user.first_name }} {{ appointment.doctor.user.last_name }}</div>
+                                    <small class="text-muted">{{ appointment.doctor.specialization|default:"General" }}</small>
+                                </div>
+                            </div>
+                        </td>
+                        <td>
+                            <div class="fw-semibold">{{ appointment.appointment_datetime|date:"M d, Y" }}</div>
+                            <small class="text-muted">{{ appointment.appointment_datetime|time:"H:i" }}</small>
+                        </td>
+                        <td>{{ appointment.reason|truncatechars:30|default:"General Checkup" }}</td>
+                        <td>
+                            {% if appointment.status == 'scheduled' %}
+                            <span class="badge badge-soft-primary">Scheduled</span>
+                            {% elif appointment.status == 'completed' %}
+                            <span class="badge badge-soft-success">Completed</span>
+                            {% else %}
+                            <span class="badge badge-soft-danger">Cancelled</span>
+                            {% endif %}
+                        </td>
+                        <td>
+                            <div class="btn-group">
+                                <a href="{% url 'core:appointment-detail' appointment.id %}" class="btn btn-sm btn-outline-primary" title="View">
+                                    <i class="bi bi-eye"></i>
+                                </a>
+                                {% if appointment.status == 'scheduled' %}
+                                <a href="{% url 'core:appointment-cancel' appointment.id %}" class="btn btn-sm btn-outline-danger" title="Cancel">
+                                    <i class="bi bi-x-lg"></i>
+                                </a>
+                                {% endif %}
+                            </div>
+                        </td>
+                    </tr>
+                    {% empty %}
+                    <tr>
+                        <td colspan="6" class="text-center py-5">
+                            <i class="bi bi-calendar-x fs-1 text-muted"></i>
+                            <h5 class="mt-3">No Appointments Found</h5>
+                            <p class="text-muted">Create your first appointment to get started.</p>
+                            <a href="{% url 'core:appointment-create' %}" class="btn btn-primary mt-2">
+                                <i class="bi bi-plus-circle me-2"></i>New Appointment
+                            </a>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+{% endblock %}

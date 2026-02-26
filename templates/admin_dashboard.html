@@ -1,0 +1,534 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Admin Dashboard - UNI Hospital{% endblock %}
+
+{% block content %}
+<div class="header">
+    <div class="d-flex justify-content-between align-items-center">
+        <div>
+            <h1 class="h3 mb-0 fade-in">Admin Dashboard</h1>
+            <p class="text-muted mb-0 fade-in delay-1">Welcome back, {{ user.first_name }}!</p>
+        </div>
+        <div class="d-flex gap-2 fade-in delay-2">
+            <button class="btn btn-light" onclick="window.print()">
+                <i class="bi bi-printer me-2"></i>Print Report
+            </button>
+            <a href="{% url 'patient-register' %}" class="btn btn-primary">
+                <i class="bi bi-person-plus me-2"></i>Add Patient
+            </a>
+        </div>
+    </div>
+</div>
+
+<!-- Statistics Cards -->
+<div class="row g-4 mb-4">
+    <div class="col-md-6 col-xl-3">
+        <div class="card stat-card fade-in-up delay-1">
+            <div class="card-body">
+                <div class="d-flex justify-content-between align-items-start">
+                    <div>
+                        <p class="text-muted mb-1">Total Patients</p>
+                        <h2 class="mb-0 counter" data-target="{{ total_patients|default:0 }}">0</h2>
+                    </div>
+                    <div class="stat-icon bg-primary-light">
+                        <i class="bi bi-people-fill text-primary"></i>
+                    </div>
+                </div>
+                <div class="mt-3">
+                    <span class="badge badge-soft-success">
+                        <i class="bi bi-arrow-up me-1"></i>12%
+                    </span>
+                    <span class="text-muted ms-2">Since last month</span>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="col-md-6 col-xl-3">
+        <div class="card stat-card fade-in-up delay-2">
+            <div class="card-body">
+                <div class="d-flex justify-content-between align-items-start">
+                    <div>
+                        <p class="text-muted mb-1">Total Doctors</p>
+                        <h2 class="mb-0 counter" data-target="{{ total_doctors|default:0 }}">0</h2>
+                    </div>
+                    <div class="stat-icon bg-success-light">
+                        <i class="bi bi-person-heart text-success"></i>
+                    </div>
+                </div>
+                <div class="mt-3">
+                    <span class="badge badge-soft-success">
+                        <i class="bi bi-arrow-up me-1"></i>5%
+                    </span>
+                    <span class="text-muted ms-2">Since last month</span>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="col-md-6 col-xl-3">
+        <div class="card stat-card fade-in-up delay-3">
+            <div class="card-body">
+                <div class="d-flex justify-content-between align-items-start">
+                    <div>
+                        <p class="text-muted mb-1">Total Appointments</p>
+                        <h2 class="mb-0 counter" data-target="{{ total_appointments|default:0 }}">0</h2>
+                    </div>
+                    <div class="stat-icon bg-warning-light">
+                        <i class="bi bi-calendar-check text-warning"></i>
+                    </div>
+                </div>
+                <div class="mt-3">
+                    <span class="badge badge-soft-success">
+                        <i class="bi bi-arrow-up me-1"></i>8%
+                    </span>
+                    <span class="text-muted ms-2">Since last month</span>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="col-md-6 col-xl-3">
+        <div class="card stat-card fade-in-up delay-4">
+            <div class="card-body">
+                <div class="d-flex justify-content-between align-items-start">
+                    <div>
+                        <p class="text-muted mb-1">Available Beds</p>
+                        <h2 class="mb-0 counter" data-target="24">0</h2>
+                    </div>
+                    <div class="stat-icon bg-info-light">
+                        <i class="bi bi-hospital text-info"></i>
+                    </div>
+                </div>
+                <div class="mt-3">
+                    <span class="badge badge-soft-warning">
+                        <i class="bi bi-dash me-1"></i>Stable
+                    </span>
+                    <span class="text-muted ms-2">Occupancy 65%</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Quick Actions & Recent Activity -->
+<div class="row g-4">
+    <!-- Quick Actions -->
+    <div class="col-lg-4">
+        <div class="card h-100 slide-in-left">
+            <div class="card-header">
+                <h5 class="mb-0"><i class="bi bi-lightning-charge me-2 text-warning"></i>Quick Actions</h5>
+            </div>
+            <div class="card-body">
+                <div class="d-grid gap-3">
+                    <a href="{% url 'patient-register' %}" class="btn btn-outline-primary btn-action">
+                        <div class="d-flex align-items-center">
+                            <div class="icon-box-sm me-3 bg-primary-subtle rounded-circle">
+                                <i class="bi bi-person-plus text-primary"></i>
+                            </div>
+                            <div class="text-start">
+                                <div class="fw-semibold">Register Patient</div>
+                                <small class="text-muted">Add new patient record</small>
+                            </div>
+                        </div>
+                    </a>
+                    <a href="#" class="btn btn-outline-success btn-action">
+                        <div class="d-flex align-items-center">
+                            <div class="icon-box-sm me-3 bg-success-subtle rounded-circle">
+                                <i class="bi bi-calendar-plus text-success"></i>
+                            </div>
+                            <div class="text-start">
+                                <div class="fw-semibold">New Appointment</div>
+                                <small class="text-muted">Schedule appointment</small>
+                            </div>
+                        </div>
+                    </a>
+                    <a href="#" class="btn btn-outline-warning btn-action">
+                        <div class="d-flex align-items-center">
+                            <div class="icon-box-sm me-3 bg-warning-subtle rounded-circle">
+                                <i class="bi bi-person-badge text-warning"></i>
+                            </div>
+                            <div class="text-start">
+                                <div class="fw-semibold">Add Doctor</div>
+                                <small class="text-muted">Register new doctor</small>
+                            </div>
+                        </div>
+                    </a>
+                    <a href="#" class="btn btn-outline-info btn-action">
+                        <div class="d-flex align-items-center">
+                            <div class="icon-box-sm me-3 bg-info-subtle rounded-circle">
+                                <i class="bi bi-file-medical text-info"></i>
+                            </div>
+                            <div class="text-start">
+                                <div class="fw-semibold">Medical Records</div>
+                                <small class="text-muted">View all records</small>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Recent Appointments -->
+    <div class="col-lg-8">
+        <div class="card h-100 slide-in-right">
+            <div class="card-header d-flex justify-content-between align-items-center">
+                <h5 class="mb-0"><i class="bi bi-clock-history me-2 text-primary"></i>Recent Appointments</h5>
+                <a href="#" class="btn btn-sm btn-outline-primary">View All</a>
+            </div>
+            <div class="card-body p-0">
+                <div class="table-wrapper">
+                    <table class="table table-hover mb-0">
+                        <thead>
+                            <tr>
+                                <th>Patient</th>
+                                <th>Doctor</th>
+                                <th>Date & Time</th>
+                                <th>Status</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for appointment in recent_appointments %}
+                            <tr>
+                                <td>
+                                    <div class="d-flex align-items-center">
+                                        <div class="avatar-sm me-2 bg-primary-subtle rounded-circle">
+                                            <i class="bi bi-person text-primary"></i>
+                                        </div>
+                                        <div>
+                                            <div class="fw-semibold">{{ appointment.patient.user.first_name }} {{ appointment.patient.user.last_name }}</div>
+                                            <small class="text-muted">{{ appointment.patient.patient_id }}</small>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="d-flex align-items-center">
+                                        <div class="icon-box-sm me-2 bg-success-subtle rounded-circle">
+                                            <i class="bi bi-person-heart text-success"></i>
+                                        </div>
+                                        <span>Dr. {{ appointment.doctor.user.first_name }} {{ appointment.doctor.user.last_name }}</span>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="fw-semibold">{{ appointment.appointment_datetime|date:"M d, Y" }}</div>
+                                    <small class="text-muted">{{ appointment.appointment_datetime|time:"H:i" }}</small>
+                                </td>
+                                <td>
+                                    {% if appointment.status == 'scheduled' %}
+                                    <span class="badge badge-soft-primary">Scheduled</span>
+                                    {% elif appointment.status == 'completed' %}
+                                    <span class="badge badge-soft-success">Completed</span>
+                                    {% else %}
+                                    <span class="badge badge-soft-danger">Cancelled</span>
+                                    {% endif %}
+                                </td>
+                                <td>
+                                    <div class="btn-group">
+                                        <button class="btn btn-sm btn-light" title="View Details">
+                                            <i class="bi bi-eye"></i>
+                                        </button>
+                                        <button class="btn btn-sm btn-light" title="More">
+                                            <i class="bi bi-three-dots"></i>
+                                        </button>
+                                    </div>
+                                </td>
+                            </tr>
+                            {% empty %}
+                            <tr>
+                                <td colspan="5" class="text-center py-5">
+                                    <div class="empty-state">
+                                        <i class="bi bi-calendar-x fs-1 text-muted"></i>
+                                        <p class="text-muted mt-3 mb-0">No recent appointments</p>
+                                        <a href="#" class="btn btn-primary btn-sm mt-3">Schedule Now</a>
+                                    </div>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Charts Row -->
+<div class="row g-4 mt-2">
+    <div class="col-md-6">
+        <div class="card fade-in-up delay-3">
+            <div class="card-header">
+                <h5 class="mb-0"><i class="bi bi-pie-chart me-2 text-primary"></i>Department Overview</h5>
+            </div>
+            <div class="card-body">
+                <div class="department-list">
+                    <div class="department-item">
+                        <div class="d-flex justify-content-between align-items-center mb-2">
+                            <span><i class="bi bi-heart-pulse text-danger me-2"></i>Cardiology</span>
+                            <span class="fw-semibold">45 patients</span>
+                        </div>
+                        <div class="progress" style="height: 10px;">
+                            <div class="progress-bar bg-danger" style="width: 75%"></div>
+                        </div>
+                    </div>
+                    <div class="department-item mt-4">
+                        <div class="d-flex justify-content-between align-items-center mb-2">
+                            <span><i class="bi bi-lungs text-primary me-2"></i>General Medicine</span>
+                            <span class="fw-semibold">38 patients</span>
+                        </div>
+                        <div class="progress" style="height: 10px;">
+                            <div class="progress-bar bg-primary" style="width: 65%"></div>
+                        </div>
+                    </div>
+                    <div class="department-item mt-4">
+                        <div class="d-flex justify-content-between align-items-center mb-2">
+                            <span><i class="bi bi-brain text-purple me-2"></i>Neurology</span>
+                            <span class="fw-semibold">22 patients</span>
+                        </div>
+                        <div class="progress" style="height: 10px;">
+                            <div class="progress-bar bg-purple" style="width: 45%"></div>
+                        </div>
+                    </div>
+                    <div class="department-item mt-4">
+                        <div class="d-flex justify-content-between align-items-center mb-2">
+                            <span><i class="bi bi-activity text-success me-2"></i>Orthopedics</span>
+                            <span class="fw-semibold">30 patients</span>
+                        </div>
+                        <div class="progress" style="height: 10px;">
+                            <div class="progress-bar bg-success" style="width: 55%"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="col-md-6">
+        <div class="card fade-in-up delay-4">
+            <div class="card-header d-flex justify-content-between align-items-center">
+                <h5 class="mb-0"><i class="bi bi-graph-up-arrow me-2 text-success"></i>Hospital Performance</h5>
+                <div class="btn-group btn-group-sm">
+                    <button class="btn btn-light active">Monthly</button>
+                    <button class="btn btn-light">Weekly</button>
+                </div>
+            </div>
+            <div class="card-body">
+                <div class="chart-container">
+                    <canvas id="performanceChart" height="220"></canvas>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Activity Timeline -->
+<div class="row g-4 mt-2">
+    <div class="col-12">
+        <div class="card fade-in-up delay-5">
+            <div class="card-header">
+                <h5 class="mb-0"><i class="bi bi-activity me-2 text-info"></i>Recent Activity</h5>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="timeline">
+                            <div class="timeline-item">
+                                <div class="timeline-dot"></div>
+                                <div class="timeline-time">Just now</div>
+                                <div class="timeline-content">
+                                    <div class="timeline-title">New patient registered</div>
+                                    <p class="timeline-text">John Doe was registered in the system</p>
+                                </div>
+                            </div>
+                            <div class="timeline-item">
+                                <div class="timeline-dot"></div>
+                                <div class="timeline-time">5 minutes ago</div>
+                                <div class="timeline-content">
+                                    <div class="timeline-title">Appointment completed</div>
+                                    <p class="timeline-text">Dr. Sarah completed consultation with Jane Smith</p>
+                                </div>
+                            </div>
+                            <div class="timeline-item">
+                                <div class="timeline-dot"></div>
+                                <div class="timeline-time">15 minutes ago</div>
+                                <div class="timeline-content">
+                                    <div class="timeline-title">New appointment scheduled</div>
+                                    <p class="timeline-text">Robert Brown scheduled for tomorrow at 10:00 AM</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="timeline">
+                            <div class="timeline-item">
+                                <div class="timeline-dot"></div>
+                                <div class="timeline-time">1 hour ago</div>
+                                <div class="timeline-content">
+                                    <div class="timeline-title">Medical report uploaded</div>
+                                    <p class="timeline-text">Lab results uploaded for Michael Chen</p>
+                                </div>
+                            </div>
+                            <div class="timeline-item">
+                                <div class="timeline-dot"></div>
+                                <div class="timeline-time">2 hours ago</div>
+                                <div class="timeline-content">
+                                    <div class="timeline-title">Doctor availability updated</div>
+                                    <p class="timeline-text">Dr. Johnson updated their schedule</p>
+                                </div>
+                            </div>
+                            <div class="timeline-item">
+                                <div class="timeline-dot"></div>
+                                <div class="timeline-time">3 hours ago</div>
+                                <div class="timeline-content">
+                                    <div class="timeline-title">Prescription renewed</div>
+                                    <p class="timeline-text">Emily Davis prescription was renewed</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+    // Counter Animation
+    document.addEventListener('DOMContentLoaded', function() {
+        const counters = document.querySelectorAll('.counter');
+        
+        counters.forEach(counter => {
+            const target = parseInt(counter.getAttribute('data-target'));
+            const duration = 1500;
+            const increment = target / (duration / 16);
+            let current = 0;
+            
+            const updateCounter = () => {
+                current += increment;
+                if (current < target) {
+                    counter.textContent = Math.floor(current);
+                    requestAnimationFrame(updateCounter);
+                } else {
+                    counter.textContent = target;
+                    counter.classList.add('counter-animate');
+                }
+            };
+            
+            // Start animation with delay
+            setTimeout(updateCounter, 300);
+        });
+    });
+
+    // Performance Chart with Enhanced Styling
+    const ctx = document.getElementById('performanceChart').getContext('2d');
+    
+    // Create gradient for the area fill
+    const gradientPatients = ctx.createLinearGradient(0, 0, 0, 300);
+    gradientPatients.addColorStop(0, 'rgba(102, 126, 234, 0.3)');
+    gradientPatients.addColorStop(1, 'rgba(102, 126, 234, 0)');
+    
+    const gradientAppointments = ctx.createLinearGradient(0, 0, 0, 300);
+    gradientAppointments.addColorStop(0, 'rgba(118, 75, 162, 0.3)');
+    gradientAppointments.addColorStop(1, 'rgba(118, 75, 162, 0)');
+    
+    const performanceChart = new Chart(ctx, {
+        type: 'line',
+        data: {
+            labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'],
+            datasets: [{
+                label: 'Patients',
+                data: [120, 150, 180, 140, 200, 250],
+                borderColor: '#667eea',
+                backgroundColor: gradientPatients,
+                fill: true,
+                tension: 0.4,
+                borderWidth: 3,
+                pointBackgroundColor: '#667eea',
+                pointBorderColor: '#fff',
+                pointBorderWidth: 2,
+                pointRadius: 5,
+                pointHoverRadius: 7
+            }, {
+                label: 'Appointments',
+                data: [80, 100, 120, 90, 140, 180],
+                borderColor: '#764ba2',
+                backgroundColor: gradientAppointments,
+                fill: true,
+                tension: 0.4,
+                borderWidth: 3,
+                pointBackgroundColor: '#764ba2',
+                pointBorderColor: '#fff',
+                pointBorderWidth: 2,
+                pointRadius: 5,
+                pointHoverRadius: 7
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            interaction: {
+                intersect: false,
+                mode: 'index'
+            },
+            plugins: {
+                legend: {
+                    position: 'top',
+                    labels: {
+                        usePointStyle: true,
+                        padding: 20,
+                        font: {
+                            family: "'Poppins', sans-serif",
+                            size: 12
+                        }
+                    }
+                },
+                tooltip: {
+                    backgroundColor: 'rgba(30, 58, 95, 0.9)',
+                    titleFont: {
+                        family: "'Poppins', sans-serif",
+                        size: 13
+                    },
+                    bodyFont: {
+                        family: "'Poppins', sans-serif",
+                        size: 12
+                    },
+                    padding: 12,
+                    cornerRadius: 10,
+                    displayColors: true,
+                    boxPadding: 6
+                }
+            },
+            scales: {
+                x: {
+                    grid: {
+                        display: false
+                    },
+                    ticks: {
+                        font: {
+                            family: "'Poppins', sans-serif",
+                            size: 11
+                        }
+                    }
+                },
+                y: {
+                    beginAtZero: true,
+                    grid: {
+                        color: 'rgba(0, 0, 0, 0.05)'
+                    },
+                    ticks: {
+                        font: {
+                            family: "'Poppins', sans-serif",
+                            size: 11
+                        }
+                    }
+                }
+            }
+        }
+    });
+</script>
+{% endblock %}

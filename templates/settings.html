@@ -1,0 +1,103 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Settings - UNI Hospital{% endblock %}
+
+{% block content %}
+<div class="header">
+    <div class="d-flex justify-content-between align-items-center">
+        <div>
+            <h1 class="h3 mb-0 fade-in">Settings</h1>
+            <p class="text-muted mb-0 fade-in delay-1">Manage your account settings</p>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-lg-3">
+        <div class="card">
+            <div class="card-header">
+                <h5 class="mb-0">Settings Menu</h5>
+            </div>
+            <div class="card-body p-0">
+                <div class="list-group list-group-flush">
+                    <a href="#" class="list-group-item list-group-item-action active">
+                        <i class="bi bi-person me-2"></i>Profile
+                    </a>
+                    <a href="#" class="list-group-item list-group-item-action">
+                        <i class="bi bi-bell me-2"></i>Notifications
+                    </a>
+                    <a href="#" class="list-group-item list-group-item-action">
+                        <i class="bi bi-shield-lock me-2"></i>Security
+                    </a>
+                    <a href="#" class="list-group-item list-group-item-action">
+                        <i class="bi bi-palette me-2"></i>Appearance
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-9">
+        <div class="card mb-4">
+            <div class="card-header">
+                <h5 class="mb-0"><i class="bi bi-person me-2 text-primary"></i>Profile Settings</h5>
+            </div>
+            <div class="card-body">
+                <form>
+                    <div class="row g-3">
+                        <div class="col-md-6">
+                            <label class="form-label">First Name</label>
+                            <input type="text" class="form-control" value="{{ user.first_name }}">
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label">Last Name</label>
+                            <input type="text" class="form-control" value="{{ user.last_name }}">
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label">Email</label>
+                            <input type="email" class="form-control" value="{{ user.email }}">
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label">Phone</label>
+                            <input type="tel" class="form-control" value="{{ user.phone_number|default:'' }}">
+                        </div>
+                        <div class="col-12">
+                            <label class="form-label">Address</label>
+                            <textarea class="form-control" rows="2"></textarea>
+                        </div>
+                    </div>
+                    <div class="mt-4">
+                        <button type="submit" class="btn btn-primary">
+                            <i class="bi bi-check-circle me-2"></i>Save Changes
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+        
+        <div class="card">
+            <div class="card-header">
+                <h5 class="mb-0"><i class="bi bi-bell me-2 text-warning"></i>Notification Settings</h5>
+            </div>
+            <div class="card-body">
+                <div class="form-check form-switch mb-3">
+                    <input class="form-check-input" type="checkbox" id="emailNotif" checked>
+                    <label class="form-check-label" for="emailNotif">Email Notifications</label>
+                </div>
+                <div class="form-check form-switch mb-3">
+                    <input class="form-check-input" type="checkbox" id="smsNotif" checked>
+                    <label class="form-check-label" for="smsNotif">SMS Notifications</label>
+                </div>
+                <div class="form-check form-switch mb-3">
+                    <input class="form-check-input" type="checkbox" id="appointmentNotif" checked>
+                    <label class="form-check-label" for="appointmentNotif">Appointment Reminders</label>
+                </div>
+                <div class="form-check form-switch">
+                    <input class="form-check-input" type="checkbox" id="marketingNotif">
+                    <label class="form-check-label" for="marketingNotif">Marketing Emails</label>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,244 @@
+{% extends "base.html" %}
+{% load static %}
+{% load crispy_forms_tags %}
+
+{% block title %}Register Patient - UNI Hospital{% endblock %}
+{% block page-title %}Register Patient{% endblock %}
+
+{% block content %}
+<div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-4 border-bottom">
+    <div>
+        <h1 class="h3 mb-1">Register New Patient</h1>
+        <p class="text-muted mb-0">Add a new patient to the system</p>
+    </div>
+    <div class="btn-toolbar mb-2 mb-md-0">
+    <a href="{% url 'core:patient-list' %}" class="btn btn-outline-secondary">
+            <i class="bi bi-arrow-left-circle me-1"></i>
+            Back to List
+        </a>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-lg-8">
+        <div class="card">
+            <div class="card-header">
+                <h5 class="mb-0"><i class="bi bi-person-plus me-2"></i>Patient Information</h5>
+            </div>
+            <div class="card-body">
+                <form method="post" enctype="multipart/form-data" id="patientForm">
+                    {% csrf_token %}
+                    
+                    <!-- Account Details -->
+                    <div class="mb-4">
+                        <h6 class="text-uppercase text-muted mb-3">
+                            <i class="bi bi-person-badge me-2"></i>Account Details
+                        </h6>
+                        <div class="row g-3">
+                            <div class="col-md-6">
+                                <label for="id_first_name" class="form-label">First Name *</label>
+                                <input type="text" name="first_name" class="form-control" id="id_first_name" required>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="id_last_name" class="form-label">Last Name *</label>
+                                <input type="text" name="last_name" class="form-control" id="id_last_name" required>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="id_username" class="form-label">Username *</label>
+                                <input type="text" name="username" class="form-control" id="id_username" required>
+                                <small class="text-muted">This will be used for login</small>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="id_email" class="form-label">Email Address</label>
+                                <input type="email" name="email" class="form-control" id="id_email">
+                            </div>
+                            <div class="col-md-6">
+                                <label for="id_password" class="form-label">Password *</label>
+                                <input type="password" name="password" class="form-control" id="id_password" required>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <hr class="my-4">
+                    
+                    <!-- Personal Details -->
+                    <div class="mb-4">
+                        <h6 class="text-uppercase text-muted mb-3">
+                            <i class="bi bi-person-vcard me-2"></i>Personal Details
+                        </h6>
+                        <div class="row g-3">
+                            <div class="col-md-6">
+                                <label for="id_date_of_birth" class="form-label">Date of Birth</label>
+                                <input type="date" name="date_of_birth" class="form-control" id="id_date_of_birth">
+                            </div>
+                            <div class="col-md-6">
+                                <label for="id_phone_number" class="form-label">Phone Number</label>
+                                <input type="tel" name="phone_number" class="form-control" id="id_phone_number" placeholder="+1 (555) 000-0000">
+                            </div>
+                            <div class="col-12">
+                                <label for="id_address" class="form-label">Address</label>
+                                <textarea name="address" class="form-control" id="id_address" rows="2" placeholder="Street address, City, State, ZIP"></textarea>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <hr class="my-4">
+                    
+                    <!-- Emergency Contact -->
+                    <div class="mb-4">
+                        <h6 class="text-uppercase text-muted mb-3">
+                            <i class="bi bi-telephone me-2"></i>Emergency Contact
+                        </h6>
+                        <div class="row g-3">
+                            <div class="col-md-6">
+                                <label for="id_emergency_contact_name" class="form-label">Contact Name</label>
+                                <input type="text" name="emergency_contact_name" class="form-control" id="id_emergency_contact_name">
+                            </div>
+                            <div class="col-md-6">
+                                <label for="id_emergency_contact_phone" class="form-label">Contact Phone</label>
+                                <input type="tel" name="emergency_contact_phone" class="form-control" id="id_emergency_contact_phone">
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <hr class="my-4">
+                    
+                    <!-- Insurance Information -->
+                    <div class="mb-4">
+                        <h6 class="text-uppercase text-muted mb-3">
+                            <i class="bi bi-shield-check me-2"></i>Insurance Information
+                        </h6>
+                        <div class="row g-3">
+                            <div class="col-md-6">
+                                <label for="id_insurance_provider" class="form-label">Insurance Provider</label>
+                                <input type="text" name="insurance_provider" class="form-control" id="id_insurance_provider" placeholder="e.g., Blue Cross">
+                            </div>
+                            <div class="col-md-6">
+                                <label for="id_insurance_policy_number" class="form-label">Policy Number</label>
+                                <input type="text" name="insurance_policy_number" class="form-control" id="id_insurance_policy_number">
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <hr class="my-4">
+                    
+                    <!-- Profile Photo -->
+                    <div class="mb-4">
+                        <h6 class="text-uppercase text-muted mb-3">
+                            <i class="bi bi-camera me-2"></i>Profile Photo
+                        </h6>
+                        <div class="row g-3">
+                            <div class="col-md-12">
+                                <label for="id_photo" class="form-label">Upload Photo</label>
+                                <input type="file" name="photo" class="form-control" id="id_photo" accept="image/*">
+                                <small class="text-muted">Recommended: JPG, PNG. Max size: 2MB</small>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                        <button type="reset" class="btn btn-outline-secondary">Reset</button>
+                        <button type="submit" class="btn btn-primary">
+                            <i class="bi bi-check-circle me-2"></i>Register Patient
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Sidebar -->
+    <div class="col-lg-4">
+        <!-- Help Card -->
+        <div class="card mb-4">
+            <div class="card-header">
+                <h5 class="mb-0"><i class="bi bi-question-circle me-2"></i>Help</h5>
+            </div>
+            <div class="card-body">
+                <p class="text-muted">Fields marked with * are required. Please ensure all patient information is accurate.</p>
+                <hr>
+                <h6>Registration Tips:</h6>
+                <ul class="text-muted" style="padding-left: 20px;">
+                    <li>Use a valid email for login credentials</li>
+                    <li>Emergency contact is required for all patients</li>
+                    <li>Insurance details can be added later</li>
+                </ul>
+            </div>
+        </div>
+        
+        <!-- Recent Registrations -->
+        <div class="card">
+            <div class="card-header">
+                <h5 class="mb-0"><i class="bi bi-clock-history me-2"></i>Recent Registrations</h5>
+            </div>
+            <div class="card-body p-0">
+                <div class="list-group list-group-flush">
+                    <div class="list-group-item">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <div>
+                                <div class="fw-semibold">John Doe</div>
+                                <small class="text-muted">HMS-2024-00012</small>
+                            </div>
+                            <small class="text-muted">2 hours ago</small>
+                        </div>
+                    </div>
+                    <div class="list-group-item">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <div>
+                                <div class="fw-semibold">Jane Smith</div>
+                                <small class="text-muted">HMS-2024-00011</small>
+                            </div>
+                            <small class="text-muted">5 hours ago</small>
+                        </div>
+                    </div>
+                    <div class="list-group-item">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <div>
+                                <div class="fw-semibold">Mike Johnson</div>
+                                <small class="text-muted">HMS-2024-00010</small>
+                            </div>
+                            <small class="text-muted">1 day ago</small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+    // Form validation
+    document.addEventListener('DOMContentLoaded', function() {
+        const form = document.getElementById('patientForm');
+        
+        form.addEventListener('submit', function(e) {
+            let isValid = true;
+            const requiredFields = form.querySelectorAll('[required]');
+            
+            requiredFields.forEach(field => {
+                if (!field.value.trim()) {
+                    field.classList.add('is-invalid');
+                    isValid = false;
+                } else {
+                    field.classList.remove('is-invalid');
+                }
+            });
+            
+            if (!isValid) {
+                e.preventDefault();
+                alert('Please fill in all required fields.');
+            }
+        });
+        
+        // Remove invalid class on input
+        form.querySelectorAll('input').forEach(input => {
+            input.addEventListener('input', function() {
+                this.classList.remove('is-invalid');
+            });
+        });
+    });
+</script>
+{% endblock %}
+

@@ -1,0 +1,98 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Doctors - UNI Hospital{% endblock %}
+
+{% block content %}
+<div class="header">
+    <div class="d-flex justify-content-between align-items-center">
+        <div>
+            <h1 class="h3 mb-0 fade-in">Doctors</h1>
+            <p class="text-muted mb-0 fade-in delay-1">Manage all doctors in the hospital</p>
+        </div>
+        <div class="d-flex gap-2 fade-in delay-2">
+            <a href="#" class="btn btn-primary">
+                <i class="bi bi-plus-circle me-2"></i>Add Doctor
+            </a>
+        </div>
+    </div>
+</div>
+
+<div class="card">
+    <div class="card-header d-flex justify-content-between align-items-center">
+        <h5 class="mb-0"><i class="bi bi-person-heart me-2 text-danger"></i>All Doctors</h5>
+        <div class="input-group" style="width: 250px;">
+            <input type="text" class="form-control" placeholder="Search doctors...">
+            <button class="btn btn-outline-secondary"><i class="bi bi-search"></i></button>
+        </div>
+    </div>
+    <div class="card-body p-0">
+        <div class="table-responsive">
+            <table class="table table-hover mb-0">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Name</th>
+                        <th>Specialization</th>
+                        <th>Phone</th>
+                        <th>Experience</th>
+                        <th>Status</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for doctor in doctors %}
+                    <tr>
+                        <td>
+                            <span class="badge badge-soft-primary">DR-{{ doctor.id }}</span>
+                        </td>
+                        <td>
+                            <div class="d-flex align-items-center">
+                                <div class="avatar-sm me-2 bg-success-subtle rounded-circle">
+                                    <i class="bi bi-person-heart text-success"></i>
+                                </div>
+                                <div>
+                                    <div class="fw-semibold">Dr. {{ doctor.user.first_name }} {{ doctor.user.last_name }}</div>
+                                </div>
+                            </div>
+                        </td>
+                        <td>{{ doctor.specialization|default:"General Medicine" }}</td>
+                        <td>{{ doctor.user.phone_number|default:"-" }}</td>
+                        <td>{{ doctor.years_of_experience|default:0 }} years</td>
+                        <td>
+                            <span class="badge badge-soft-success">
+                                <span class="status-dot online me-1"></span>Active
+                            </span>
+                        </td>
+                        <td>
+                            <div class="btn-group">
+                                <button class="btn btn-sm btn-outline-primary" title="View Profile">
+                                    <i class="bi bi-eye"></i>
+                                </button>
+                                <button class="btn btn-sm btn-outline-success" title="Edit">
+                                    <i class="bi bi-pencil"></i>
+                                </button>
+                                <button class="btn btn-sm btn-outline-info" title="Schedule">
+                                    <i class="bi bi-calendar"></i>
+                                </button>
+                            </div>
+                        </td>
+                    </tr>
+                    {% empty %}
+                    <tr>
+                        <td colspan="7" class="text-center py-5">
+                            <i class="bi bi-person-heart fs-1 text-muted"></i>
+                            <h5 class="mt-3">No Doctors Found</h5>
+                            <p class="text-muted">Add your first doctor to get started.</p>
+                            <a href="#" class="btn btn-primary mt-2">
+                                <i class="bi bi-plus-circle me-2"></i>Add Doctor
+                            </a>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+{% endblock %}

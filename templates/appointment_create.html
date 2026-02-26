@@ -1,0 +1,101 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Create Appointment - UNI Hospital{% endblock %}
+
+{% block content %}
+<div class="header">
+    <div class="d-flex justify-content-between align-items-center">
+        <div>
+            <h1 class="h3 mb-0 fade-in">New Appointment</h1>
+            <p class="text-muted mb-0 fade-in delay-1">Schedule a new appointment</p>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-lg-8">
+        <div class="card">
+            <div class="card-header">
+                <h5 class="mb-0"><i class="bi bi-calendar-plus me-2 text-primary"></i>Appointment Details</h5>
+            </div>
+            -body">
+                <form method="post">
+                    {% csrf_token %}
+                   <div class="card <div class="row g-3">
+                        <div class="col-md-6">
+                            <label class="form-label">Patient</label>
+                            <select name="patient" class="form-select" required>
+                                <option value="">Select Patient</option>
+                                {% for patient in patients %}
+                                <option value="{{ patient.id }}">{{ patient.user.first_name }} {{ patient.user.last_name }} ({{ patient.patient_id }})</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label">Doctor</label>
+                            <select name="doctor" class="form-select" required>
+                                <option value="">Select Doctor</option>
+                                {% for doctor in doctors %}
+                                <option value="{{ doctor.id }}">Dr. {{ doctor.user.first_name }} {{ doctor.user.last_name }} - {{ doctor.specialization }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label">Date</label>
+                            <input type="date" name="date" class="form-control" required>
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label">Time</label>
+                            <input type="time" name="time" class="form-control" required>
+                        </div>
+                        <div class="col-12">
+                            <label class="form-label">Reason for Visit</label>
+                            <textarea name="reason" class="form-control" rows="3" placeholder="Describe the reason for this appointment..."></textarea>
+                        </div>
+                        <div class="col-12">
+                            <label class="form-label">Notes</label>
+                            <textarea name="notes" class="form-control" rows="2" placeholder="Additional notes..."></textarea>
+                        </div>
+                    </div>
+                    <div class="mt-4 d-flex gap-2">
+                        <button type="submit" class="btn btn-primary">
+                            <i class="bi bi-check-circle me-2"></i>Create Appointment
+                        </button>
+                        <a href="{% url 'core:appointment-list' %}" class="btn btn-outline-secondary">
+                            <i class="bi bi-x-circle me-2"></i>Cancel
+                        </a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-4">
+        <div class="card">
+            <div class="card-header">
+                <h5 class="mb-0"><i class="bi bi-info-circle me-2 text-info"></i>Quick Tips</h5>
+            </div>
+            <div class="card-body">
+                <ul class="list-unstyled">
+                    <li class="mb-3">
+                        <i class="bi bi-check-circle text-success me-2"></i>
+                        <small>Select patient from the list</small>
+                    </li>
+                    <li class="mb-3">
+                        <i class="bi bi-check-circle text-success me-2"></i>
+                        <small>Choose an available doctor</small>
+                    </li>
+                    <li class="mb-3">
+                        <i class="bi bi-check-circle text-success me-2"></i>
+                        <small>Pick a date and time</small>
+                    </li>
+                    <li>
+                        <i class="bi bi-check-circle text-success me-2"></i>
+                        <small>Provide reason for visit</small>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,267 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Dashboard - HMS{% endblock %}
+
+{% block content %}
+<div class="header">
+    <div class="d-flex justify-content-between align-items-center">
+        <div>
+            <h1 class="h3 mb-0 fade-in">Dashboard</h1>
+            <p class="text-muted mb-0 fade-in delay-1">Welcome back, {{ user.get_full_name|default:user.username }}!</p>
+        </div>
+    </div>
+</div>
+
+<!-- KPI Counters -->
+<div class="row g-4 mb-4">
+    <div class="col-xl-3 col-md-6">
+        <div class="card stat-card fade-in-up delay-1">
+            <div class="card-body">
+                <div class="d-flex justify-content-between align-items-start">
+                    <div>
+                        <p class="text-muted mb-1">Total Patients</p>
+                        <h2 class="mb-0 counter" data-target="1204">0</h2>
+                    </div>
+                    <div class="stat-icon bg-primary-light">
+                        <i class="bi bi-people-fill text-primary"></i>
+                    </div>
+                </div>
+                <div class="mt-3">
+                    <span class="badge badge-soft-success">
+                        <i class="bi bi-arrow-up me-1"></i>12%
+                    </span>
+                    <span class="text-muted ms-2">Since last month</span>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="col-xl-3 col-md-6">
+        <div class="card stat-card fade-in-up delay-2">
+            <div class="card-body">
+                <div class="d-flex justify-content-between align-items-start">
+                    <div>
+                        <p class="text-muted mb-1">Total Appointments</p>
+                        <h2 class="mb-0 counter" data-target="856">0</h2>
+                    </div>
+                    <div class="stat-icon bg-success-light">
+                        <i class="bi bi-calendar-check text-success"></i>
+                    </div>
+                </div>
+                <div class="mt-3">
+                    <span class="badge badge-soft-success">
+                        <i class="bi bi-arrow-up me-1"></i>8%
+                    </span>
+                    <span class="text-muted ms-2">Since last month</span>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="col-xl-3 col-md-6">
+        <div class="card stat-card fade-in-up delay-3">
+            <div class="card-body">
+                <div class="d-flex justify-content-between align-items-start">
+                    <div>
+                        <p class="text-muted mb-1">Bed Occupancy</p>
+                        <h2 class="mb-0 counter" data-target="78">0</h2>
+                        <small class="text-muted">%</small>
+                    </div>
+                    <div class="stat-icon bg-warning-light">
+                        <i class="bi bi-hospital text-warning"></i>
+                    </div>
+                </div>
+                <div class="mt-3">
+                    <span class="badge badge-soft-warning">
+                        <i class="bi bi-dash me-1"></i>Stable
+                    </span>
+                    <span class="text-muted ms-2">156/200 beds</span>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="col-xl-3 col-md-6">
+        <div class="card stat-card fade-in-up delay-4">
+            <div class="card-body">
+                <div class="d-flex justify-content-between align-items-start">
+                    <div>
+                        <p class="text-muted mb-1">Revenue</p>
+                        <h2 class="mb-0">$</h2><h2 class="mb-0 counter d-inline-block" data-target="45000">0</h2>
+                    </div>
+                    <div class="stat-icon bg-info-light">
+                        <i class="bi bi-currency-dollar text-info"></i>
+                    </div>
+                </div>
+                <div class="mt-3">
+                    <span class="badge badge-soft-success">
+                        <i class="bi bi-arrow-up me-1"></i>15%
+                    </span>
+                    <span class="text-muted ms-2">Since last month</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Charts -->
+<div class="row g-4">
+    <div class="col-lg-8">
+        <div class="card fade-in-up delay-3">
+            <div class="card-header d-flex justify-content-between align-items-center">
+                <h5 class="mb-0"><i class="bi bi-bar-chart-line-fill me-2 text-primary"></i>Monthly Revenue</h5>
+                <div class="btn-group btn-group-sm">
+                    <button class="btn btn-light active">Monthly</button>
+                    <button class="btn btn-light">Weekly</button>
+                </div>
+            </div>
+            <div class="card-body">
+                <div class="chart-container">
+                    <canvas id="revenueChart" width="100%" height="50"></canvas>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="col-lg-4">
+        <div class="card fade-in-up delay-4">
+            <div class="card-header">
+                <h5 class="mb-0"><i class="bi bi-pie-chart-fill me-2 text-success"></i>Patient Growth</h5>
+            </div>
+            <div class="card-body">
+                <canvas id="patientGrowthChart" width="100%" height="50"></canvas>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+document.addEventListener("DOMContentLoaded", function() {
+    // Counter Animation
+    const counters = document.querySelectorAll('.counter');
+    
+    counters.forEach(counter => {
+        const target = parseInt(counter.getAttribute('data-target'));
+        const duration = 1500;
+        const increment = target / (duration / 16);
+        let current = 0;
+        
+        const updateCounter = () => {
+            current += increment;
+            if (current < target) {
+                counter.textContent = Math.floor(current).toLocaleString();
+                requestAnimationFrame(updateCounter);
+            } else {
+                counter.textContent = target.toLocaleString();
+                counter.classList.add('counter-animate');
+            }
+        };
+        
+        setTimeout(updateCounter, 300);
+    });
+
+    // Revenue Chart
+    var ctx = document.getElementById('revenueChart').getContext('2d');
+    
+    const gradientRevenue = ctx.createLinearGradient(0, 0, 0, 300);
+    gradientRevenue.addColorStop(0, 'rgba(102, 126, 234, 0.3)');
+    gradientRevenue.addColorStop(1, 'rgba(102, 126, 234, 0)');
+    
+    var revenueChart = new Chart(ctx, {
+        type: 'line',
+        data: {
+            labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'],
+            datasets: [{
+                label: 'Revenue in $',
+                data: [12000, 19000, 15000, 25000, 22000, 30000],
+                backgroundColor: gradientRevenue,
+                borderColor: '#667eea',
+                fill: true,
+                tension: 0.4,
+                borderWidth: 3,
+                pointBackgroundColor: '#667eea',
+                pointBorderColor: '#fff',
+                pointBorderWidth: 2,
+                pointRadius: 5,
+                pointHoverRadius: 7
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+                legend: {
+                    display: false
+                },
+                tooltip: {
+                    backgroundColor: 'rgba(30, 58, 95, 0.9)',
+                    titleFont: { family: "'Poppins', sans-serif", size: 13 },
+                    bodyFont: { family: "'Poppins', sans-serif", size: 12 },
+                    padding: 12,
+                    cornerRadius: 10
+                }
+            },
+            scales: {
+                x: {
+                    grid: { display: false },
+                    ticks: { font: { family: "'Poppins', sans-serif", size: 11 } }
+                },
+                y: {
+                    beginAtZero: true,
+                    grid: { color: 'rgba(0, 0, 0, 0.05)' },
+                    ticks: { 
+                        font: { family: "'Poppins', sans-serif", size: 11 },
+                        callback: function(value) {
+                            return '$' + value.toLocaleString();
+                        }
+                    }
+                }
+            }
+        }
+    });
+
+    // Patient Growth Chart
+    var ctx2 = document.getElementById('patientGrowthChart').getContext('2d');
+    var patientGrowthChart = new Chart(ctx2, {
+        type: 'doughnut',
+        data: {
+            labels: ['New Patients', 'Returning', 'Referrals'],
+            datasets: [{
+                data: [45, 35, 20],
+                backgroundColor: [
+                    '#667eea',
+                    '#764ba2',
+                    '#28a745'
+                ],
+                borderWidth: 0,
+                hoverOffset: 10
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            cutout: '65%',
+            plugins: {
+                legend: {
+                    position: 'bottom',
+                    labels: {
+                        usePointStyle: true,
+                        padding: 15,
+                        font: { family: "'Poppins', sans-serif", size: 11 }
+                    }
+                },
+                tooltip: {
+                    backgroundColor: 'rgba(30, 58, 95, 0.9)',
+                    padding: 12,
+                    cornerRadius: 10
+                }
+            }
+        }
+    });
+});
+</script>
+{% endblock %}

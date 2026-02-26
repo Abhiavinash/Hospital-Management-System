@@ -1,0 +1,124 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Messages - UNI Hospital{% endblock %}
+
+{% block content %}
+<div class="header">
+    <div class="d-flex justify-content-between align-items-center">
+        <div>
+            <h1 class="h3 mb-0 fade-in">Messages</h1>
+            <p class="text-muted mb-0 fade-in delay-1">Chat with doctors and patients</p>
+        </div>
+        <div class="d-flex gap-2 fade-in delay-2">
+            <button class="btn btn-primary">
+                <i class="bi bi-plus-circle me-2"></i>New Message
+            </button>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-4">
+        <div class="card">
+            <div class="card-header">
+                <h5 class="mb-0">Conversations</h5>
+            </div>
+            <div class="card-body p-0">
+                <div class="list-group list-group-flush">
+                    <a href="#" class="list-group-item list-group-item-action active">
+                        <div class="d-flex align-items-center">
+                            <div class="avatar-sm me-2 bg-primary-subtle rounded-circle">
+                                <i class="bi bi-person text-primary"></i>
+                            </div>
+                            <div class="flex-grow-1">
+                                <div class="d-flex justify-content-between">
+                                    <span class="fw-semibold">Dr. Sarah Johnson</span>
+                                    <small class="text-muted">2m ago</small>
+                                </div>
+                                <small class="text-muted">Your test results are ready...</small>
+                            </div>
+                        </div>
+                    </a>
+                    <a href="#" class="list-group-item list-group-item-action">
+                        <div class="d-flex align-items-center">
+                            <div class="avatar-sm me-2 bg-success-subtle rounded-circle">
+                                <i class="bi bi-person text-success"></i>
+                            </div>
+                            <div class="flex-grow-1">
+                                <div class="d-flex justify-content-between">
+                                    <span class="fw-semibold">Jane Smith</span>
+                                    <small class="text-muted">1h ago</small>
+                                </div>
+                                <small class="text-muted">Thank you for the prescription</small>
+                            </div>
+                        </div>
+                    </a>
+                    <a href="#" class="list-group-item list-group-item-action">
+                        <div class="d-flex align-items-center">
+                            <div class="avatar-sm me-2 bg-warning-subtle rounded-circle">
+                                <i class="bi bi-person text-warning"></i>
+                            </div>
+                            <div class="flex-grow-1">
+                                <div class="d-flex justify-content-between">
+                                    <span class="fw-semibold">Dr. Michael Chen</span>
+                                    <small class="text-muted">Yesterday</small>
+                                </div>
+                                <small class="text-muted">Please schedule a follow-up</small>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-8">
+        <div class="card">
+            <div class="card-header d-flex justify-content-between align-items-center">
+                <div class="d-flex align-items-center">
+                    <div class="avatar-sm me-2 bg-primary-subtle rounded-circle">
+                        <i class="bi bi-person text-primary"></i>
+                    </div>
+                    <div>
+                        <span class="fw-semibold">Dr. Sarah Johnson</span>
+                        <small class="text-muted d-block">Cardiologist</small>
+                    </div>
+                </div>
+                <button class="btn btn-sm btn-light"><i class="bi bi-three-dots-vertical"></i></button>
+            </div>
+            <div class="card-body" style="height: 400px; overflow-y: auto;">
+                <div class="message received mb-3">
+                    <div class="d-flex justify-content-start">
+                        <div class="bg-light p-3 rounded-3" style="max-width: 70%;">
+                            <p class="mb-0">Hello! Your test results are ready. Everything looks good!</p>
+                            <small class="text-muted">10:30 AM</small>
+                        </div>
+                    </div>
+                </div>
+                <div class="message sent mb-3">
+                    <div class="d-flex justify-content-end">
+                        <div class="bg-primary text-white p-3 rounded-3" style="max-width: 70%;">
+                            <p class="mb-0">Thank you, Doctor! That's great news.</p>
+                            <small class="text-white-50">10:32 AM</small>
+                        </div>
+                    </div>
+                </div>
+                <div class="message received">
+                    <div class="d-flex justify-content-start">
+                        <div class="bg-light p-3 rounded-3" style="max-width: 70%;">
+                            <p class="mb-0">Please remember to take your medication as prescribed.</p>
+                            <small class="text-muted">10:33 AM</small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="card-footer">
+                <div class="input-group">
+                    <input type="text" class="form-control" placeholder="Type a message...">
+                    <button class="btn btn-primary"><i class="bi bi-send"></i></button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
