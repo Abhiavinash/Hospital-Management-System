@@ -27,7 +27,7 @@ SECRET_KEY = os.environ.get('SECRET_KEY', 'django-insecure-0i+m+hqw7$#7lf7r8!8mw
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = os.environ.get('DEBUG', 'False') == 'True'
 
-ALLOWED_HOSTS = ['hospital-management-system.onrender.com', 'localhost', '127.0.0.1']
+ALLOWED_HOSTS = ['hospital-management-system.onrender.com', 'localhost', '127.0.0.1', '.onrender.com', '*']
 
 
 # Application definition
@@ -146,3 +146,12 @@ STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 
 # WhiteNoise configuration for serving static files
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+
+# CSRF and Session settings for production
+CSRF_COOKIE_SECURE = False  # Set to True in production with HTTPS
+SESSION_COOKIE_SECURE = False  # Set to True in production with HTTPS
+CSRF_COOKIE_HTTPONLY = False
+SESSION_COOKIE_HTTPONLY = True
+
+# Site ID for Django sites framework (required for some Django features)
+SITE_ID = 1
